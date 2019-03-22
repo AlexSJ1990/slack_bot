@@ -9,18 +9,23 @@ const bot = new SlackBot({
 });
 
 bot.on('start', () => {
-  const params =  {
-    icon_emoji: ':smiley:'
-  }
-  bot.postMessageToChannel('general', "varlborg", params)
 });
 
-// error handler
+//  this part listens for messages on the channel
+bot.on('message', (message) => {
+  if (Object.keys(message).includes("client_msg_id")) {
+    const messages_array = message.text.split(" ")
+    const mess = message.text
+    if (message.text.includes("valborg")) {
+      bot.postMessageToChannel('random', mess)
+    }
+  }
+})
 
+// error handler
 bot.on('error', (err) => console.log(err));
 
 // message handler
-
 bot.on('message', data => {
   if (data.type !== 'message') {
     return;
@@ -29,28 +34,23 @@ bot.on('message', data => {
   // handleMessage(data.text);
 });
 
-// const handleMessage = (message) => {
-//   console.log(message)
-//   if(message.includes("new")) {
-//     bot.postMessageToChannel('random', 'new varlborg test')
-//     return
-//   }
+
+// working with API - OLD
+
+// const getMessages = () => {
+//   const TOKEN = process.env.SECURITY_TOKEN
+//   axios.get(`https://slack.com/api/channels.history?token=${TOKEN}&channel=CH647QWR5`)
+//   .then(res => {
+//     res.data.messages.forEach((message) => {
+//       if (Object.keys(message).includes("client_msg_id")) {
+//         const messages_array = message.text.split(" ")
+//         if (message.text.includes("valborg")) {
+//           bot.postMessageToChannel('random', 'test can we post')
+//         }
+//       }
+//     });
+//   })
 // }
 
-const getMessages = () => {
-  const TOKEN = process.env.SECURITY_TOKEN
-  axios.get(`https://slack.com/api/channels.history?token=${TOKEN}&channel=CH647QWR5`)
-  .then(res => {
-    res.data.messages.forEach((message) => {
-      if (Object.keys(message).includes("client_msg_id")) {
-        const messages_array = message.text.split(" ")
-        if (message.text.includes("valborg")) {
-          bot.postMessageToChannel('random', 'test can we post')
-        }
-      }
-    });
-  })
-}
-
-getMessages();
+// getMessages();
 
