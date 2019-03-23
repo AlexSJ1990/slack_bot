@@ -13,7 +13,8 @@ bot.on('start', () => {
 
 //  this part listens for messages on the channel
 bot.on('message', (message) => {
-  if (Object.keys(message).includes("client_msg_id")) {
+  if ((Object.keys(message).includes("client_msg_id")) && (Object.keys(message.channel === "CH647QWR5"))) {
+    console.log(message)
     const messages_array = message.text.split(" ")
     const mess = message.text
     if (message.text.includes("valborg")) {
@@ -21,6 +22,7 @@ bot.on('message', (message) => {
     }
   }
 })
+
 
 // error handler
 bot.on('error', (err) => console.log(err));
