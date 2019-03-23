@@ -13,16 +13,21 @@ bot.on('start', () => {
 
 //  this part listens for messages on the channel
 bot.on('message', (message) => {
-  if ((Object.keys(message).includes("client_msg_id")) && (Object.keys(message.channel === "CH647QWR5"))) {
-    console.log(message)
+  const channel = "CH647QWR5"
+  const timestamp = message.ts
+  const TOKEN = process.env.BOT_TOKEN
+  if ((Object.keys(message).includes("client_msg_id")) && (Object.keys(message.channel === channel))) {
     const messages_array = message.text.split(" ")
     const mess = message.text
     if (message.text.includes("valborg")) {
       bot.postMessageToChannel('random', mess)
+      axios.post(`https://slack.com/api/chat.delete?token=${TOKEN}&channel=CH647QWR5&ts=${timestamp}`)
+      .then(res => {
+        return res
+      })
     }
   }
-})
-
+});
 
 // error handler
 bot.on('error', (err) => console.log(err));
@@ -33,26 +38,4 @@ bot.on('message', data => {
     return;
   }
   console.log(data.text)
-  // handleMessage(data.text);
 });
-
-
-// working with API - OLD
-
-// const getMessages = () => {
-//   const TOKEN = process.env.SECURITY_TOKEN
-//   axios.get(`https://slack.com/api/channels.history?token=${TOKEN}&channel=CH647QWR5`)
-//   .then(res => {
-//     res.data.messages.forEach((message) => {
-//       if (Object.keys(message).includes("client_msg_id")) {
-//         const messages_array = message.text.split(" ")
-//         if (message.text.includes("valborg")) {
-//           bot.postMessageToChannel('random', 'test can we post')
-//         }
-//       }
-//     });
-//   })
-// }
-
-// getMessages();
-
