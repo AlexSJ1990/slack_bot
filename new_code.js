@@ -13,7 +13,7 @@ exports.handler = function(event, context) {
     if (message.includes("A new file is uploaded from member")) {
       const messages_array = message.split(" ")
       // example for this one A new file is uploaded from member 1067013 with type image/png. The file key is 01695210-4efe-11e9-b95f-af9d3b683c99-asset.png
-      const memberIDFileUpload = message_array[7]
+      const memberIDFileUpload = messages_array[7]
 
       // getMessages(memberIDFileUpload, message.text)
 
@@ -22,7 +22,7 @@ exports.handler = function(event, context) {
       .then(res => {
         res.data.messages.forEach((mess) => {
           const memberIDValborgMessage = mess.text.split(" ")[4].slice(0, -1)
-        // if this is true it means that there is a match in the user_id and they have posted a message with valborg
+          // if this is true it means that there is a match in the user_id and they have posted a message with valborg
           if (memberIDValborgMessage === memberIDFileUpload && message.text.includes("valborg")) {
             // post both valborg message and file upload message to new chat
             // mess is instance of messages that we are currently iterating over - this is the valborg message
@@ -30,10 +30,10 @@ exports.handler = function(event, context) {
             // message is declared above const message = event.Records[0].Sns.Message - this is the file upload message
             postMessage(message.text)
           }
-        }
-      };
+        });
+      });
     }
-  });
+  };
 
   const postMessage = (message) => {
     channel = '#testing'
